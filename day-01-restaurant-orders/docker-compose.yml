@@ -1,0 +1,97 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # Order Intake Service
+  order-intake:
+    build: ./services/order-intake
+    ports:
+      - "3001:3001"
+    environment:
+      PORT: 3001
+      DB_HOST: postgres
+      DB_NAME: orders
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      QUEUE_MANAGER_URL: http://queue-manager:3002
+    depends_on:
+      postgres:
+        condition: service_healthy
+      queue-manager:
+        condition: service_started
+    restart: unless-stopped
+
+  # Queue Manager Service
+  queue-manager:
+    build: ./services/queue-manager
+    ports:
+      - "3002:3002"
+    environment:
+      PORT: 3002
+      REDIS_HOST: redis
+      STATUS_TRACKER_URL: http://status-tracker:3004
+    depends_on:
+      redis:
+        condition: service_healthy
+      status-tracker:
+        condition: service_started
+    restart: unless-stopped
+
+  # Kitchen Display Service
+  kitchen-display:
+    build: ./services/kitchen-display
+    ports:
+      - "3003:3003"
+    environment:
+      PORT: 3003
+      QUEUE_MANAGER_URL: http://queue-manager:3002
+      STATUS_TRACKER_URL: http://status-tracker:3004
+    depends_on:
+      - queue-manager
+      - status-tracker
+    restart: unless-stopped
+
+  # Status Tracker Service
+  status-tracker:
+    build: ./services/status-tracker
+    ports:
+      - "3004:3004"
+    environment:
+      PORT: 3004
+      DB_HOST: postgres
+      DB_NAME: status
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

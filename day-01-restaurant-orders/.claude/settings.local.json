@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker-compose up:*)",
+      "Bash(docker-compose ps:*)",
+      "Bash(docker-compose logs:*)",
+      "Bash(docker exec:*)",
+      "Bash(docker-compose restart:*)",
+      "Bash(curl:*)",
+      "Bash(jq:*)",
+      "Bash(npm install:*)",
+      "Bash(npm test:*)",
+      "Bash(chmod:*)",
+      "Bash(tree:*)"
+    ]
+  }
+}
