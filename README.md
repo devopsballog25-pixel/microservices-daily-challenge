@@ -79,8 +79,8 @@ MIT License - Feel free to use this code for learning!
 
 ## 🔗 Connect
 
-- **YouTube:** [Channel](https://youtube.com/@devopsballog25?si=VXq8bhMVWzbFAY95)
-- **LinkedIn:** [Your Profile](www.linkedin.com/in/balaji-loganathan22)
+- **YouTube:** https://youtube.com/@devopsballog25?si=VXq8bhMVWzbFAY95
+- **LinkedIn:** www.linkedin.com/in/balaji-loganathan22
 - **Newsletter:** [Subscribe](#) *(coming soon)*
 
 ---
