@@ -23,7 +23,7 @@ Watch the full series: [YouTube Playlist](#) *(coming soon)*
 - **Cost:** $8.21
 - **Time:** 42 minutes
 - **Code:** [day-01-restaurant-orders/](./day-01-restaurant-orders/)
-- **Video:** [YouTube](#) *(coming soon)*
+- **Video:** [Watch on YouTube](https://youtu.be/jVgutAQZCUc)
 
 ### Day 02: Coming Soon! 🔜
 
@@ -79,8 +79,8 @@ MIT License - Feel free to use this code for learning!
 
 ## 🔗 Connect
 
-- **YouTube:** [Channel](#) *(coming soon)*
-- **LinkedIn:** [Your Profile](#)
+- **YouTube:** [Channel](https://youtube.com/@devopsballog25?si=VXq8bhMVWzbFAY95)
+- **LinkedIn:** [Your Profile](www.linkedin.com/in/balaji-loganathan22)
 - **Newsletter:** [Subscribe](#) *(coming soon)*
 
 ---
