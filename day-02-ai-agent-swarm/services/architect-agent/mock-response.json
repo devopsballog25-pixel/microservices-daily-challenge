@@ -1,0 +1,37 @@
+{
+  "techStack": {
+    "frontend": "React with Vite",
+    "backend": "Node.js with Express",
+    "language": "TypeScript"
+  },
+  "database": {
+    "primary": "PostgreSQL",
+    "reasoning": "You'll be storing structured resume data with relationships (users, resumes, job descriptions, generated versions). PostgreSQL gives you reliable ACID transactions and JSON columns for flexible document storage. At 1,000 users, it's proven and scalable."
+  },
+  "hosting": {
+    "platform": "Railway or Render",
+    "reasoning": "Both offer free PostgreSQL databases, simple deployment from GitHub, and scale painlessly. Railway has better DX. Render has more generous free tier. Either beats managing AWS at your stage. You can migrate to AWS later if you hit their limits."
+  },
+  "architecture": {
+    "pattern": "Modular Monolith",
+    "reasoning": "You're solo with React/Node.js skills. A single codebase with clear module boundaries (auth, resume-parsing, AI-generation, PDF-export) is maintainable. Microservices would slow you down. You can split services later if needed, but you won't need to."
+  },
+  "thirdPartyServices": [
+    {
+      "service": "Clerk Auth",
+      "purpose": "Authentication",
+      "reasoning": "Free tier covers 5,000 users. Drop-in React components. Handles OAuth, magic links, session management. Don't build auth yourself — it's a security liability and time sink."
+    },
+    {
+      "service": "OpenAI GPT-4 API",
+      "purpose": "Resume optimization",
+      "reasoning": "Your core value prop. GPT-4 understands job descriptions and resumes deeply. Costs ~$0.03-0.10 per resume generation depending on length. Budget accordingly."
+    },
+    {
+      "service": "Replicate or similar",
+      "purpose": "PDF generation (optional)",
+      "reasoning": "Consider a service like PDFShift or Docraptor. Generating PDFs from HTML is finicky. Pay $0.01-0.02 per PDF rather than debugging Chrome headless."
+    }
+  ],
+  "reasoning": "Your constraints are: solo developer, $150 budget, React/Node skills, 1,000 users in 6 months. This stack lets you ship fast, stay within budget, and avoid over-engineering. You can add complexity later when you have revenue and users proving demand."
+}

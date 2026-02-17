@@ -1,0 +1,61 @@
+{
+  "mustHaveAtLaunch": [
+    {
+      "requirement": "Third-party authentication (Clerk/Auth0)",
+      "reasoning": "You're handling resume data with PII (names, addresses, work history, emails). Rolling your own auth is a security liability. Use Clerk as the Architect suggested — their free tier is sufficient and they handle session management, password security, OAuth securely."
+    },
+    {
+      "requirement": "HTTPS everywhere (enforced)",
+      "reasoning": "Resumes contain sensitive career information. All data in transit must be encrypted. Railway/Render provide free SSL certificates. Zero excuse not to have this."
+    },
+    {
+      "requirement": "Input sanitization for AI prompts",
+      "reasoning": "Users will paste job descriptions and resumes. You MUST sanitize inputs before sending to OpenAI to prevent prompt injection attacks where malicious job descriptions could manipulate the AI's behavior."
+    },
+    {
+      "requirement": "Rate limiting on API endpoints",
+      "reasoning": "Especially on the resume generation endpoint. Without rate limiting, someone could spam your API and drain your OpenAI budget. Even a simple in-memory rate limiter (express-rate-limit) is better than nothing."
+    }
+  ],
+  "canWaitUntilLater": [
+    {
+      "requirement": "SOC 2 compliance",
+      "reasoning": "You're B2C, not selling to enterprises. SOC 2 matters when you have enterprise customers demanding it. At 1,000 users, focus on basic security hygiene first."
+    },
+    {
+      "requirement": "Web Application Firewall (WAF)",
+      "reasoning": "Nice to have, but at your scale and budget ($150/month), basic rate limiting and input validation are sufficient. Add Cloudflare's free tier if you see attack patterns later."
+    },
+    {
+      "requirement": "Penetration testing",
+      "reasoning": "Important eventually, but at pre-revenue with 1,000 users, your threat model is opportunistic attacks, not targeted ones. Focus on common vulnerabilities (OWASP Top 10) first."
+    }
+  ],
+  "architectDisagreements": [
+    {
+      "architectRecommendation": "PostgreSQL database",
+      "myPosition": "AGREE, but with encryption requirements",
+      "reasoning": "PostgreSQL is fine, but you MUST ensure resume data is stored with encryption at rest. Railway/Render provide this by default, but verify it. Also, be careful about logging — never log full resume content or job descriptions."
+    },
+    {
+      "architectRecommendation": "Consider PDF generation service (PDFShift/Docraptor)",
+      "myPosition": "STRONGLY AGREE from security perspective",
+      "reasoning": "Generating PDFs in-house with headless Chrome creates a huge attack surface (RCE vulnerabilities in Chrome, PDF parsing bugs). Using a third-party service isolates this risk. Worth the $0.01-0.02 per PDF."
+    }
+  ],
+  "specificRisks": [
+    {
+      "risk": "PII data breach",
+      "mitigation": "Implement GDPR-style data handling even if not required: users can delete their data, you delete resumes after 30 days of inactivity, clear audit trail of who accessed what. This isn't just legal — it's trust."
+    },
+    {
+      "risk": "AI API key exposure",
+      "mitigation": "NEVER send your OpenAI API key to the frontend. All AI calls must go through your backend. Use environment variables, never commit keys to git. Consider using OpenAI's usage limits feature to cap costs if key is compromised."
+    },
+    {
+      "risk": "Malicious file uploads",
+      "mitigation": "If you allow resume uploads (PDF/DOCX), use a virus scanning service (ClamAV or cloud service like VirusTotal API). Limit file sizes. Parse files server-side, never trust client-side parsing."
+    }
+  ],
+  "reasoning": "Your app handles PII and costs money to run (OpenAI API). Your two biggest risks are: (1) data breach exposing user resumes, and (2) API abuse draining your budget. The must-haves address both. Everything else can wait until you have revenue to pay for it."
+}

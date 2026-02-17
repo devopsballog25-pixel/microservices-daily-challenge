@@ -1,0 +1,71 @@
+{
+  "currentScaleCosts": {
+    "hosting": "$5/month",
+    "database": "$0/month (Railway free tier)",
+    "thirdPartyServices": [
+      {
+        "service": "Clerk Auth",
+        "cost": "$0/month",
+        "note": "Free tier covers up to 5,000 users. You're at 1,000. Safe."
+      },
+      {
+        "service": "OpenAI API (GPT-4)",
+        "cost": "$30-100/month",
+        "note": "This is your biggest cost. If each resume generation costs $0.05 (2K tokens in, 1K tokens out), and 20% of your 1,000 users generate 1 resume/month, that's 200 generations = $10/month. But heavy users could generate 5-10 resumes/month, pushing this to $50-100/month."
+      },
+      {
+        "service": "PDF generation (PDFShift)",
+        "cost": "$10-20/month",
+        "note": "If 200 PDFs/month at $0.01-0.02 each = $2-4/month. But if users generate multiple versions, this scales with OpenAI usage."
+      }
+    ],
+    "total": "$45-125/month"
+  },
+  "growthScaleCosts": {
+    "description": "At 3x users (3,000 users)",
+    "total": "$135-375/month",
+    "breakdown": "Hosting scales to $15/month (Railway paid tier). Database might need paid tier ($10/month). OpenAI API becomes $90-300/month depending on usage patterns. PDF generation $30-60/month. This exceeds your $150 budget significantly."
+  },
+  "cheaperAlternatives": [
+    {
+      "currentRecommendation": "PostgreSQL on Railway/Render",
+      "cheaperOption": "SQLite (local file) until you hit 10K users",
+      "savings": "$10-15/month",
+      "tradeoff": "SQLite is single-file, no network overhead, perfect for solo app at your scale. You'll need to migrate to PostgreSQL eventually, but not now. Save the money."
+    },
+    {
+      "currentRecommendation": "GPT-4 for resume generation",
+      "cheaperOption": "GPT-3.5-Turbo for first draft, GPT-4 for final polish (optional upgrade)",
+      "savings": "$20-60/month",
+      "tradeoff": "GPT-3.5-Turbo costs 1/10th of GPT-4. Quality is slightly lower, but for resume rewrites, it's 80% as good at 10% the cost. Let users opt into GPT-4 as a paid upgrade. Most won't know the difference."
+    },
+    {
+      "currentRecommendation": "Third-party PDF service",
+      "cheaperOption": "Open-source library (pdf-lib or Puppeteer)",
+      "savings": "$10-20/month",
+      "tradeoff": "Security Agent warned about this, but if you're careful (sandbox Puppeteer, validate inputs), you can save $10-20/month. Trade security risk for cost savings — your call."
+    }
+  ],
+  "hiddenCosts": [
+    {
+      "item": "OpenAI API rate limit overages",
+      "estimatedCost": "$50-200/month if abused",
+      "explanation": "Without rate limiting (which Security Agent mentioned), a malicious user or bug could spam your API. OpenAI doesn't auto-cut you off — you get a bill. Set usage limits in OpenAI dashboard."
+    },
+    {
+      "item": "Data storage growth",
+      "estimatedCost": "$5-10/month after 6 months",
+      "explanation": "Each resume is ~5KB text + metadata. 1,000 users × 3 resumes each = 15MB. Negligible now, but if you store every version, it compounds. Security Agent mentioned deleting old resumes — do it."
+    },
+    {
+      "item": "Monitoring/logging (if you add it)",
+      "estimatedCost": "$10-30/month",
+      "explanation": "Services like LogRocket, Sentry, or Datadog cost money. Use Railway's built-in logs for free initially. Add paid monitoring only when you have revenue."
+    }
+  ],
+  "budgetVerdict": {
+    "canAfford": true,
+    "reasoning": "Your $150/month budget CAN work at 1,000 users if: (1) You use GPT-3.5-Turbo instead of GPT-4 as default, (2) You use SQLite instead of hosted PostgreSQL, (3) You implement rate limiting to prevent API abuse. But at 3x growth (3,000 users), you'll exceed budget. Plan to charge users $5-10/month by then to cover costs."
+  },
+  "reasoning": "Your biggest cost is the OpenAI API — it's variable and scales with usage. The Architect's plan is solid but slightly over-engineered for your budget. I've challenged the PostgreSQL and GPT-4 recommendations with cheaper alternatives. The Security Agent's recommendations (rate limiting, auth) actually SAVE you money by preventing abuse. Follow those."
+}

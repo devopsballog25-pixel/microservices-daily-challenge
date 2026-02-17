@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  web-ui:
+    build: ./services/web-ui
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+    depends_on:
+      - orchestrator
+    networks:
+      - agent-network
+
+  orchestrator:
+    build: ./services/orchestrator
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - MOCK_MODE=${MOCK_MODE:-false}
+      - ARCHITECT_URL=http://architect-agent:3002
+      - SECURITY_URL=http://security-agent:3003
+      - COST_URL=http://cost-agent:3004
+      - DEVOPS_URL=http://devops-agent:3005
+    volumes:
+      - orchestrator-data:/app/data
+    depends_on:
+      - architect-agent
+      - security-agent
+      - cost-agent
+      - devops-agent
+    networks:
+      - agent-network
+
+  architect-agent:
+    build: ./services/architect-agent
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - MOCK_MODE=${MOCK_MODE:-false}
+    networks:
+      - agent-network
+
+  security-agent:
+    build: ./services/security-agent
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - MOCK_MODE=${MOCK_MODE:-false}
+    networks:
+      - agent-network
+
+  cost-agent:
+    build: ./services/cost-agent
+    ports:
+      - "3004:3004"
+    environment:
+      - PORT=3004
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - MOCK_MODE=${MOCK_MODE:-false}
+    networks:
+      - agent-network
+
+  devops-agent:
+    build: ./services/devops-agent
+    ports:
+      - "3005:3005"
+    environment:
+      - PORT=3005
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - MOCK_MODE=${MOCK_MODE:-false}
+    networks:
+      - agent-network
+
+networks:
+  agent-network:
+    driver: bridge
+
+volumes:
+  orchestrator-data:

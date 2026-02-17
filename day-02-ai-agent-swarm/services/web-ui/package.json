@@ -1,0 +1,12 @@
+{
+  "name": "web-ui",
+  "version": "1.0.0",
+  "description": "Web UI Service for AI CTO Swarm",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

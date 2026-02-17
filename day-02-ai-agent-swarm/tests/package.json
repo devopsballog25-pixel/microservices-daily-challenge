@@ -1,0 +1,11 @@
+{
+  "name": "ai-cto-swarm-tests",
+  "version": "1.0.0",
+  "description": "Integration tests for AI CTO Agent Swarm",
+  "scripts": {
+    "test": "node integration.test.js"
+  },
+  "dependencies": {
+    "node-fetch": "^2.7.0"
+  }
+}

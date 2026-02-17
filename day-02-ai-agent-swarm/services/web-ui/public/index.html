@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI CTO Agent Swarm - Technical Strategy Advisor</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🤖 AI CTO Agent Swarm</h1>
+      <p class="subtitle">Get technical strategy advice from a team of AI specialists</p>
+    </header>
+
+    <main>
+      <!-- Input Form -->
+      <section id="input-section" class="card">
+        <h2>Tell us about your startup</h2>
+        <form id="analysis-form">
+          <div class="form-group">
+            <label for="projectDescription">What are you building?</label>
+            <textarea
+              id="projectDescription"
+              name="projectDescription"
+              rows="4"
+              placeholder="e.g., AI-powered resume builder SaaS - users paste a job description and upload their resume, AI rewrites and optimizes the resume for that specific job, outputs a polished PDF"
+              required
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="techSkills">Your technical skills</label>
+            <input
+              type="text"
+              id="techSkills"
+              name="techSkills"
+              placeholder="e.g., React, Node.js, basic AWS"
+              required
+            >
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="monthlyBudget">Monthly infrastructure budget (USD)</label>
+              <input
+                type="number"
+                id="monthlyBudget"
+                name="monthlyBudget"
+                placeholder="150"
+                min="0"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="expectedUsers">Expected users in 6 months</label>
+              <input
+                type="number"
+                id="expectedUsers"
+                name="expectedUsers"
+                placeholder="1000"
+                min="0"
+                required
+              >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="teamSize">Team size</label>
+            <select id="teamSize" name="teamSize" required>
+              <option value="solo">Solo</option>
+              <option value="2-3 people">2-3 people</option>
+              <option value="4-6 people">4-6 people</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn-primary">Get My Technical Strategy</button>
+        </form>
+      </section>
+
+      <!-- Activity Feed -->
+      <section id="activity-section" class="card" style="display: none;">
+        <h2>Agent Activity</h2>
+        <div id="activity-feed" class="activity-feed"></div>
+      </section>
+
+      <!-- Final Report -->
+      <section id="report-section" class="card" style="display: none;">
+        <h2>Your Technical Strategy</h2>
+        <div id="final-report"></div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Powered by Claude Haiku agents working together to solve your technical challenges</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
