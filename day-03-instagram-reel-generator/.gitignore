@@ -1,0 +1,55 @@
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables (CRITICAL - NEVER COMMIT)
+.env
+.env.*
+.env.local
+.env.production
+.env.development
+*.env
+!.env.example
+
+# API Keys (additional protection)
+*_API_KEY*
+*_API_TOKEN*
+*_SECRET*
+
+# Docker volumes
+postgres-data/
+redis-data/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.swo
+*~
+
+# macOS
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Test coverage
+coverage/
+
+# Build files
+dist/
+build/
+
+# Temporary files
+*.tmp
+.cache/
+
+# Output (video files can be large)
+output/
+*.mp4
+*.wav
+*.mp3
+temp/
