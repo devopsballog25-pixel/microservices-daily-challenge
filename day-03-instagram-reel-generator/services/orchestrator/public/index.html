@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Instagram Reel Generator</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --bg2: #12121a;
+      --bg3: #1a1a28;
+      --border: #2a2a40;
+      --teal: #00d4c8;
+      --teal-dim: #00a89e;
+      --teal-glow: rgba(0, 212, 200, 0.15);
+      --purple: #7c3aed;
+      --text: #e8e8f0;
+      --text-dim: #8888a8;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ============ HEADER ============ */
+    header {
+      padding: 20px 40px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--bg2);
+    }
+
+    .logo {
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    header h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    header p {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+
+    .badge {
+      margin-left: auto;
+      background: var(--teal-glow);
+      border: 1px solid var(--teal);
+      color: var(--teal);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* ============ MAIN CONTENT ============ */
+    main {
+      flex: 1;
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* ============ SCREENS ============ */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ============ FORM SCREEN ============ */
+    .form-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px;
+    }
+
+    .form-card h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--teal), #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .form-card .subtitle {
+      color: var(--text-dim);
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: var(--text);
+      font-size: 15px;
+      font-family: var(--font);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px var(--teal-glow);
+    }
+
+    /* Radio toggle groups */
+    .toggle-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .toggle-group input[type="radio"] { display: none; }
+
+    .toggle-group label {
+      flex: 1;
+      text-align: center;
+      padding: 10px 16px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: 0;
+      color: var(--text-dim);
+      transition: all 0.2s;
+      margin: 0;
+    }
+
+    .toggle-group input[type="radio"]:checked + label {
+      background: var(--teal-glow);
+      border-color: var(--teal);
+      color: var(--teal);
+      font-weight: 600;
+    }
+
+    .btn-generate {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--teal), var(--teal-dim));
+      color: #000;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: all 0.2s;
+      margin-top: 8px;
+    }
+
+    .btn-generate:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-generate:active { transform: translateY(0); }
+
+    .cost-hint {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: 10px;
+    }
+
+    /* ============ PIPELINE SCREEN ============ */
+    .pipeline-header {
+      margin-bottom: 28px;
+    }
+
+    .pipeline-header h2 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .pipeline-header p {
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    /* Progress bar */
+    .progress-bar-wrap {
+      background: var(--bg3);
+      border-radius: 6px;
+      height: 6px;
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--teal), #a78bfa);
+      border-radius: 6px;
+      transition: width 0.5s ease;
+    }
+
+    /* Agent cards */
+    .agent-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: border-color 0.3s;
+    }
+
+    .agent-card.active { border-color: var(--teal); }
+    .agent-card.completed { border-color: var(--success); }
+    .agent-card.failed { border-color: var(--error); }
+
+    .agent-icon {
+      font-size: 24px;
+      width: 36px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .agent-info { flex: 1; min-width: 0; }
+
+    .agent-name {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .agent-summary {
+      font-size: 13px;
+      color: var(--text-dim);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .agent-meta {
+      display: flex;
+      gap: 16px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .meta-label {
+      font-size: 10px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .meta-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* Challenges section */
+    .challenges-section {
+      margin-top: 20px;
+    }
+
+    .challenge-card {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+    }
+
+    .challenge-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--warning);
+      margin-bottom: 4px;
+    }
+
+    .challenge-text {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    /* Pipeline footer */
+    .pipeline-footer {
+      margin-top: 24px;
+      padding: 16px 20px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .footer-stat .label {
+      font-size: 11px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .footer-stat .value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--teal);
+    }
+
+    /* Spinner animation */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinning { display: inline-block; animation: spin 1s linear infinite; }
+
+    /* ============ RESULTS SCREEN ============ */
+    .results-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 24px;
+    }
+
+    /* Video column */
+    .video-column {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .video-container {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    video {
+      width: 100%;
+      display: block;
+      border-radius: 16px;
+    }
+
+    .btn-download {
+      width: 100%;
+      padding: 12px;
+      background: var(--bg3);
+      border: 1px solid var(--teal);
+      color: var(--teal);
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: all 0.2s;
+      text-decoration: none;
+      display: block;
+      text-align: center;
+    }
+
+    .btn-download:hover {
+      background: var(--teal-glow);
+    }
+
+    /* Content column */
+    .content-column {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .result-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .result-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .result-card-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-copy {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: all 0.2s;
+    }
+
+    .btn-copy:hover { border-color: var(--teal); color: var(--teal); }
+    .btn-copy.copied { border-color: var(--success); color: var(--success); }
+
+    .caption-text {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .hashtag-text {
+      font-size: 12px;
+      line-height: 1.8;
+      color: var(--teal);
+      word-break: break-word;
+    }
+
+    /* Posting strategy */
+    .strategy-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .strategy-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 13px;
+    }
+
+    .strategy-icon { font-size: 16px; flex-shrink: 0; }
+    .strategy-text { color: var(--text-dim); line-height: 1.4; }
+
+    /* Cost breakdown */
+    .cost-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .cost-table tr:not(:last-child) td { border-bottom: 1px solid var(--border); }
+    .cost-table td { padding: 8px 0; color: var(--text-dim); }
+    .cost-table td:last-child { text-align: right; color: var(--text); font-weight: 600; }
+    .cost-table tr.total td { color: var(--teal); font-weight: 700; font-size: 15px; border-top: 1px solid var(--border); padding-top: 12px; }
+
+    /* Generate another button */
+    .btn-again {
+      width: 100%;
+      padding: 14px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      border-radius: 10px;
+      font-size: 14px;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: all 0.2s;
+      margin-top: 8px;
+    }
+
+    .btn-again:hover { border-color: var(--teal); color: var(--teal); }
+
+    /* ============ TOAST ============ */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--success);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    /* ============ ERROR ============ */
+    .error-box {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid var(--error);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .error-icon { font-size: 20px; flex-shrink: 0; }
+    .error-title { font-weight: 600; color: var(--error); margin-bottom: 4px; }
+    .error-message { font-size: 13px; color: var(--text-dim); }
+
+    /* ============ VARIANTS TABS ============ */
+    .variant-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .variant-tab {
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      color: var(--text-dim);
+      transition: all 0.2s;
+    }
+
+    .variant-tab.active {
+      border-color: var(--teal);
+      background: var(--teal-glow);
+      color: var(--teal);
+    }
+
+    .variant-content { display: none; }
+    .variant-content.active { display: block; }
+
+    /* Full-width copy all button */
+    .btn-copy-all {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, var(--teal), var(--teal-dim));
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: all 0.2s;
+    }
+
+    .btn-copy-all:hover { opacity: 0.9; }
+
+    /* Scrollable hashtags */
+    .hashtag-scroll {
+      max-height: 80px;
+      overflow-y: auto;
+    }
+
+    /* Status indicator dots */
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .status-dot.pending { background: var(--text-dim); }
+    .status-dot.in_progress { background: var(--teal); animation: pulse 1s ease-in-out infinite; }
+    .status-dot.completed { background: var(--success); }
+    .status-dot.failed { background: var(--error); }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* Predictions */
+    .prediction-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .prediction-item {
+      background: var(--bg3);
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    .prediction-label {
+      font-size: 11px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .prediction-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--teal);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🎬</div>
+  <div>
+    <h1>AI Instagram Reel Generator</h1>
+    <p>4 AI agents collaborate to create your perfect reel in minutes</p>
+  </div>
+</header>
+
+<main>
+  <!-- ============ SCREEN 1: INPUT FORM ============ -->
+  <div id="screen-input" class="screen active">
+    <div class="form-card">
+      <h2>Generate Your Reel</h2>
+      <p class="subtitle">Enter your niche and preferences — our AI agents do the rest</p>
+
+      <div class="form-group">
+        <label for="niche">Content Niche</label>
+        <input type="text" id="niche" placeholder="e.g., AI art, fitness, cooking, travel..."
+               value="AI art" />
+      </div>
+
+      <div class="form-group">
+        <label for="hashtags">Hashtags (comma-separated, without #)</label>
+        <input type="text" id="hashtags" placeholder="aiart, aigenerated, aiartcommunity..."
+               value="aiart, aigenerated, aiartcommunity, texttoimage" />
+      </div>
+
+      <div class="form-group">
+        <label>Video Quality</label>
+        <div class="toggle-group">
+          <input type="radio" name="quality" id="q-std" value="std" />
+          <label for="q-std">Standard &mdash; $0.84 / reel</label>
+
+          <input type="radio" name="quality" id="q-pro" value="pro" checked />
+          <label for="q-pro">Pro &mdash; $1.22 / reel</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Number of Clips</label>
+        <div class="toggle-group">
+          <input type="radio" name="clips" id="c-2" value="2" />
+          <label for="c-2">2 clips &mdash; 10 seconds</label>
+
+          <input type="radio" name="clips" id="c-3" value="3" checked />
+          <label for="c-3">3 clips &mdash; 15 seconds</label>
+        </div>
+      </div>
+
+      <button class="btn-generate" onclick="startGeneration()">
+        Generate Reel &rarr;
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ SCREEN 2: PIPELINE PROGRESS ============ -->
+  <div id="screen-pipeline" class="screen">
+    <div class="pipeline-header">
+      <h2>Generating Your Reel</h2>
+      <p id="pipeline-subtitle">4 AI agents are collaborating...</p>
+    </div>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progress-bar" style="width: 0%"></div>
+    </div>
+
+    <!-- Agent cards -->
+    <div id="agent-cards">
+      <div class="agent-card" id="card-0">
+        <div class="agent-icon" id="icon-0">⏳</div>
+        <div class="agent-info">
+          <div class="agent-name">Trend Scout</div>
+          <div class="agent-summary" id="summary-0">Waiting to start...</div>
+        </div>
+        <div class="agent-meta">
+          <div class="meta-item">
+            <span class="meta-label">Time</span>
+            <span class="meta-value" id="duration-0">—</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Cost</span>
+            <span class="meta-value" id="cost-0">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent-card" id="card-1">
+        <div class="agent-icon" id="icon-1">⏳</div>
+        <div class="agent-info">
+          <div class="agent-name">Content Strategist</div>
+          <div class="agent-summary" id="summary-1">Waiting for trend data...</div>
+        </div>
+        <div class="agent-meta">
+          <div class="meta-item">
+            <span class="meta-label">Time</span>
+            <span class="meta-value" id="duration-1">—</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Cost</span>
+            <span class="meta-value" id="cost-1">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent-card" id="card-2">
+        <div class="agent-icon" id="icon-2">⏳</div>
+        <div class="agent-info">
+          <div class="agent-name">Visual Producer</div>
+          <div class="agent-summary" id="summary-2">Waiting for creative brief...</div>
+        </div>
+        <div class="agent-meta">
+          <div class="meta-item">
+            <span class="meta-label">Time</span>
+            <span class="meta-value" id="duration-2">—</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Cost</span>
+            <span class="meta-value" id="cost-2">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent-card" id="card-3">
+        <div class="agent-icon" id="icon-3">⏳</div>
+        <div class="agent-info">
+          <div class="agent-name">Post Optimizer</div>
+          <div class="agent-summary" id="summary-3">Waiting for video...</div>
+        </div>
+        <div class="agent-meta">
+          <div class="meta-item">
+            <span class="meta-label">Time</span>
+            <span class="meta-value" id="duration-3">—</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Cost</span>
+            <span class="meta-value" id="cost-3">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Challenges section -->
+    <div class="challenges-section" id="challenges-section" style="display:none">
+      <div style="font-size:13px;font-weight:600;color:var(--warning);margin-bottom:10px;">
+        ⚡ Agent Challenges
+      </div>
+      <div id="challenges-list"></div>
+    </div>
+
+    <!-- Pipeline footer -->
+    <div class="pipeline-footer">
+      <div class="footer-stat">
+        <span class="label">Running Cost</span>
+        <span class="value" id="running-cost">$0.00</span>
+      </div>
+      <div class="footer-stat">
+        <span class="label">Elapsed</span>
+        <span class="value" id="elapsed-time">0s</span>
+      </div>
+      <div class="footer-stat">
+        <span class="label">Stage</span>
+        <span class="value" style="font-size:14px;color:var(--text-dim)" id="current-stage">Starting...</span>
+      </div>
+    </div>
+
+    <!-- Error display -->
+    <div id="error-box" class="error-box" style="display:none;margin-top:20px;">
+      <div class="error-icon">❌</div>
+      <div>
+        <div class="error-title">Pipeline Error</div>
+        <div class="error-message" id="error-message"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SCREEN 3: RESULTS ============ -->
+  <div id="screen-results" class="screen">
+    <div style="margin-bottom:24px;display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <h2 style="font-size:22px;font-weight:700;margin-bottom:4px;">Your Reel is Ready!</h2>
+        <p style="color:var(--text-dim);font-size:14px;" id="results-summary">Pipeline completed successfully</p>
+      </div>
+      <button class="btn-again" onclick="resetToInput()" style="width:auto;padding:10px 20px;">
+        + Generate Another
+      </button>
+    </div>
+
+    <div class="results-grid">
+      <!-- Left: Video -->
+      <div class="video-column">
+        <div class="video-container">
+          <video id="result-video" controls playsinline>
+            <source id="video-source" src="" type="video/mp4">
+            Your browser does not support the video element.
+          </video>
+        </div>
+        <a class="btn-download" id="download-btn" href="#" download>
+          ⬇ Download MP4
+        </a>
+      </div>
+
+      <!-- Right: Content -->
+      <div class="content-column">
+
+        <!-- Caption Variants -->
+        <div class="result-card">
+          <div class="result-card-header">
+            <span class="result-card-title">Captions</span>
+            <button class="btn-copy" onclick="copyAllForInstagram()">Copy All for Instagram</button>
+          </div>
+
+          <div class="variant-tabs">
+            <div class="variant-tab active" onclick="switchVariant('A', this)">Variant A</div>
+            <div class="variant-tab" onclick="switchVariant('B', this)">Variant B</div>
+          </div>
+
+          <div id="variant-A" class="variant-content active">
+            <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
+              <button class="btn-copy" onclick="copyCaption('A')">📋 Copy</button>
+            </div>
+            <div class="caption-text" id="caption-A">Loading...</div>
+          </div>
+
+          <div id="variant-B" class="variant-content">
+            <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
+              <button class="btn-copy" onclick="copyCaption('B')">📋 Copy</button>
+            </div>
+            <div class="caption-text" id="caption-B">Loading...</div>
+          </div>
+        </div>
+
+        <!-- Hashtags -->
+        <div class="result-card">
+          <div class="result-card-header">
+            <span class="result-card-title">30 Hashtags</span>
+            <button class="btn-copy" onclick="copyHashtags()">📋 Copy All</button>
+          </div>
+          <div class="hashtag-scroll">
+            <div class="hashtag-text" id="hashtag-display">Loading...</div>
+          </div>
+        </div>
+
+        <!-- Posting Strategy -->
+        <div class="result-card">
+          <div class="result-card-header">
+            <span class="result-card-title">Posting Strategy</span>
+          </div>
+          <div class="strategy-list" id="posting-strategy">
+            <div style="color:var(--text-dim);font-size:13px;">Loading...</div>
+          </div>
+          <div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:12px;color:var(--text-dim)">First comment:</span>
+            <button class="btn-copy" onclick="copyFirstComment()">📋 Copy</button>
+          </div>
+          <div class="caption-text" id="first-comment" style="font-size:12px;margin-top:6px;color:var(--text-dim);">Loading...</div>
+        </div>
+
+        <!-- Engagement Predictions -->
+        <div class="result-card">
+          <div class="result-card-header">
+            <span class="result-card-title">Predictions</span>
+          </div>
+          <div class="prediction-grid" id="predictions">
+            <div class="prediction-item">
+              <div class="prediction-label">Expected Views</div>
+              <div class="prediction-value" id="pred-views">—</div>
+            </div>
+            <div class="prediction-item">
+              <div class="prediction-label">Engagement Rate</div>
+              <div class="prediction-value" id="pred-engagement">—</div>
+            </div>
+            <div class="prediction-item">
+              <div class="prediction-label">Viral Potential</div>
+              <div class="prediction-value" id="pred-viral">—</div>
+            </div>
+            <div class="prediction-item">
+              <div class="prediction-label">Reasoning</div>
+              <div class="prediction-value" style="font-size:11px;color:var(--text-dim)" id="pred-reason">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cost Breakdown -->
+        <div class="result-card">
+          <div class="result-card-header">
+            <span class="result-card-title">Pipeline Cost</span>
+          </div>
+          <table class="cost-table" id="cost-table">
+            <tbody id="cost-tbody">
+              <tr><td>Loading...</td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Agent Challenges -->
+        <div class="result-card" id="result-challenges-card" style="display:none">
+          <div class="result-card-header">
+            <span class="result-card-title">⚡ Agent Challenges</span>
+          </div>
+          <div id="result-challenges-list"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Toast notification -->
+<div class="toast" id="toast">Copied to clipboard!</div>
+
+<script>
+  // ============================================================
+  // STATE
+  // ============================================================
+  let currentJobId = null;
+  let pollInterval = null;
+  let jobResults = null;
+  let activeVariant = 'A';
+
+  // ============================================================
+  // SCREEN MANAGEMENT
+  // ============================================================
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function resetToInput() {
+    if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
+    currentJobId = null;
+    jobResults = null;
+    resetPipelineUI();
+    showScreen('screen-input');
+  }
+
+  function resetPipelineUI() {
+    for (let i = 0; i < 4; i++) {
+      const icons = ['⏳','⏳','⏳','⏳'];
+      const summaries = ['Waiting to start...','Waiting for trend data...','Waiting for creative brief...','Waiting for video...'];
+      setAgentUI(i, 'pending', icons[i], summaries[i], '—', '—');
+    }
+    document.getElementById('progress-bar').style.width = '0%';
+    document.getElementById('running-cost').textContent = '$0.00';
+    document.getElementById('elapsed-time').textContent = '0s';
+    document.getElementById('current-stage').textContent = 'Starting...';
+    document.getElementById('challenges-section').style.display = 'none';
+    document.getElementById('challenges-list').innerHTML = '';
+    document.getElementById('error-box').style.display = 'none';
+  }
+
+  // ============================================================
+  // START GENERATION
+  // ============================================================
+  async function startGeneration() {
+    const niche = document.getElementById('niche').value.trim();
+    const hashtagsRaw = document.getElementById('hashtags').value;
+    const quality = document.querySelector('input[name="quality"]:checked')?.value || 'pro';
+    const clips = document.querySelector('input[name="clips"]:checked')?.value || '3';
+
+    if (!niche) {
+      alert('Please enter a content niche!');
+      return;
+    }
+
+    const hashtags = hashtagsRaw.split(',')
+      .map(h => h.trim().replace(/^#/, ''))
+      .filter(h => h.length > 0);
+
+    showScreen('screen-pipeline');
+    resetPipelineUI();
+
+    try {
+      const response = await fetch('/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ niche, hashtags, quality, clips: parseInt(clips) })
+      });
+
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+      currentJobId = data.jobId;
+
+      // Start polling
+      pollInterval = setInterval(pollStatus, 2000);
+      pollStatus(); // immediate first poll
+
+    } catch (err) {
+      showError(`Failed to start generation: ${err.message}`);
+    }
+  }
+
+  // ============================================================
+  // POLL STATUS
+  // ============================================================
+  async function pollStatus() {
+    if (!currentJobId) return;
+
+    try {
+      const response = await fetch(`/status/${currentJobId}`);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const status = await response.json();
+
+      updatePipelineUI(status);
+
+      if (status.status === 'completed') {
+        clearInterval(pollInterval);
+        pollInterval = null;
+        await loadResults();
+      } else if (status.status === 'error') {
+        clearInterval(pollInterval);
+        pollInterval = null;
+        showError(status.error || 'Pipeline failed');
+      }
+    } catch (err) {
+      console.error('Poll error:', err);
+    }
+  }
+
+  // ============================================================
+  // UPDATE PIPELINE UI
+  // ============================================================
+  function updatePipelineUI(status) {
+    // Update footer
+    document.getElementById('running-cost').textContent = status.runningCost || '$0.00';
+    document.getElementById('elapsed-time').textContent = status.elapsed || '0s';
+    document.getElementById('current-stage').textContent = formatStage(status.stage);
+
+    // Calculate progress
+    const completed = status.pipeline.filter(p => p.status === 'completed').length;
+    const inProgress = status.pipeline.filter(p => p.status === 'in_progress').length;
+    const progress = (completed / 4) * 100 + (inProgress > 0 ? 5 : 0);
+    document.getElementById('progress-bar').style.width = `${Math.min(progress, 95)}%`;
+
+    // Update each agent card
+    status.pipeline.forEach((agent, i) => {
+      const icon = getAgentIcon(agent.status);
+      const summary = agent.summary || getDefaultSummary(i, agent.status);
+      const duration = agent.duration || '—';
+      const cost = agent.cost || '—';
+      setAgentUI(i, agent.status, icon, summary, duration, cost);
+    });
+
+    // Update challenges
+    if (status.challenges && status.challenges.length > 0) {
+      const section = document.getElementById('challenges-section');
+      section.style.display = 'block';
+      const list = document.getElementById('challenges-list');
+      list.innerHTML = status.challenges.map(c => `
+        <div class="challenge-card">
+          <div class="challenge-title">⚡ ${c.challenger} challenged ${c.challenged}</div>
+          <div class="challenge-text">${escapeHtml(c.issue)}</div>
+        </div>
+      `).join('');
+    }
+  }
+
+  function formatStage(stage) {
+    const labels = {
+      trend_analysis: 'Trend Analysis',
+      content_strategy: 'Content Strategy',
+      video_production: 'Video Production',
+      post_optimization: 'Post Optimization',
+      completed: 'Complete ✓',
+      error: 'Error'
+    };
+    return labels[stage] || stage || 'Processing';
+  }
+
+  function getAgentIcon(status) {
+    const icons = {
+      pending: '⏳',
+      in_progress: '🔄',
+      completed: '✅',
+      failed: '❌'
+    };
+    return icons[status] || '⏳';
+  }
+
+  function getDefaultSummary(index, status) {
+    const defaults = [
+      'Analyzing Instagram trends...',
+      'Creating content strategy...',
+      'Producing video clips...',
+      'Optimizing post package...'
+    ];
+    if (status === 'pending') {
+      const pendingDefaults = ['Waiting to start...', 'Waiting for trend data...', 'Waiting for creative brief...', 'Waiting for video...'];
+      return pendingDefaults[index];
+    }
+    return defaults[index] || 'Processing...';
+  }
+
+  function setAgentUI(index, status, icon, summary, duration, cost) {
+    const card = document.getElementById(`card-${index}`);
+    if (!card) return;
+
+    // Update classes
+    card.className = 'agent-card';
+    if (status === 'in_progress') card.classList.add('active');
+    else if (status === 'completed') card.classList.add('completed');
+    else if (status === 'failed') card.classList.add('failed');
+
+    document.getElementById(`icon-${index}`).textContent = status === 'in_progress' ? '🔄' : icon;
+    document.getElementById(`summary-${index}`).textContent = summary;
+    document.getElementById(`duration-${index}`).textContent = duration;
+    document.getElementById(`cost-${index}`).textContent = cost;
+  }
+
+  // ============================================================
+  // LOAD AND DISPLAY RESULTS
+  // ============================================================
+  async function loadResults() {
+    try {
+      const response = await fetch(`/results/${currentJobId}`);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      jobResults = await response.json();
+
+      displayResults(jobResults);
+      showScreen('screen-results');
+
+    } catch (err) {
+      showError(`Failed to load results: ${err.message}`);
+    }
+  }
+
+  function displayResults(results) {
+    // Video player
+    const videoSrc = `/download/${currentJobId}`;
+    document.getElementById('video-source').src = videoSrc;
+    const video = document.getElementById('result-video');
+    video.load();
+
+    // Download button
+    document.getElementById('download-btn').href = videoSrc;
+    document.getElementById('download-btn').download = `reel-${currentJobId}.mp4`;
+
+    // Captions
+    const captions = results.postPackage?.captions || [];
+    const captionA = captions.find(c => c.variant === 'A') || captions[0] || {};
+    const captionB = captions.find(c => c.variant === 'B') || captions[1] || {};
+
+    document.getElementById('caption-A').textContent = captionA.text || 'No caption available';
+    document.getElementById('caption-B').textContent = captionB.text || 'No caption available';
+
+    // Hashtags
+    const hashtags = results.postPackage?.hashtags;
+    if (hashtags) {
+      const formatted = hashtags.formatted ||
+        [...(hashtags.niche || []), ...(hashtags.medium || []), ...(hashtags.broad || [])].join(' ');
+      document.getElementById('hashtag-display').textContent = formatted;
+    }
+
+    // Posting strategy
+    const strategy = results.postPackage?.postingStrategy;
+    if (strategy) {
+      const stratHtml = [
+        ...(strategy.bestTimes || []).map(t => `<div class="strategy-item"><span class="strategy-icon">⏰</span><span class="strategy-text">${escapeHtml(t)}</span></div>`),
+        strategy.storyStrategy ? `<div class="strategy-item"><span class="strategy-icon">📱</span><span class="strategy-text">${escapeHtml(strategy.storyStrategy)}</span></div>` : '',
+        ...(strategy.engagementTips || []).map(tip => `<div class="strategy-item"><span class="strategy-icon">💡</span><span class="strategy-text">${escapeHtml(tip)}</span></div>`)
+      ].filter(Boolean).join('');
+      document.getElementById('posting-strategy').innerHTML = stratHtml;
+      document.getElementById('first-comment').textContent = strategy.firstComment || '';
+    }
+
+    // Predictions
+    const pred = results.postPackage?.predictions;
+    if (pred) {
+      document.getElementById('pred-views').textContent = pred.expectedViews || '—';
+      document.getElementById('pred-engagement').textContent = pred.expectedEngagement || '—';
+      document.getElementById('pred-viral').textContent = pred.viralPotential || '—';
+      document.getElementById('pred-reason').textContent = pred.reasoning || '—';
+    }
+
+    // Cost breakdown
+    const pipeline = results.trendData ? [
+      { agent: 'Trend Scout', cost: results.trendData?.cost?.total },
+      { agent: 'Content Strategist', cost: results.creativeBrief?.cost?.total },
+      { agent: 'Visual Producer', cost: 0 },
+      { agent: 'Post Optimizer', cost: results.postPackage?.cost?.total }
+    ] : [];
+
+    const totalCost = results.totalCost || '0.00';
+    const tbody = document.getElementById('cost-tbody');
+    tbody.innerHTML = pipeline.map(item =>
+      `<tr><td>${escapeHtml(item.agent)}</td><td>$${(item.cost || 0).toFixed(3)}</td></tr>`
+    ).join('') + `<tr class="total"><td>Total</td><td>$${totalCost}</td></tr>`;
+
+    // Challenges in results
+    const statusResponse = { challenges: [] }; // We need challenges from job
+    fetch(`/status/${currentJobId}`).then(r => r.json()).then(s => {
+      if (s.challenges && s.challenges.length > 0) {
+        const card = document.getElementById('result-challenges-card');
+        card.style.display = 'block';
+        document.getElementById('result-challenges-list').innerHTML = s.challenges.map(c => `
+          <div class="challenge-card">
+            <div class="challenge-title">⚡ ${escapeHtml(c.challenger)} challenged ${escapeHtml(c.challenged)}</div>
+            <div class="challenge-text">${escapeHtml(c.issue)}</div>
+          </div>
+        `).join('');
+      }
+    }).catch(() => {});
+
+    // Results summary
+    document.getElementById('results-summary').textContent =
+      `Completed in ${results.totalDuration || '—'} • Total cost: $${totalCost}`;
+  }
+
+  // ============================================================
+  // CAPTION VARIANT TABS
+  // ============================================================
+  function switchVariant(variant, tabEl) {
+    activeVariant = variant;
+    document.querySelectorAll('.variant-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.variant-content').forEach(c => c.classList.remove('active'));
+    tabEl.classList.add('active');
+    document.getElementById(`variant-${variant}`).classList.add('active');
+  }
+
+  // ============================================================
+  // COPY BUTTONS
+  // ============================================================
+  async function copyToClipboard(text, btn) {
+    try {
+      await navigator.clipboard.writeText(text);
+      showToast('Copied to clipboard!');
+      if (btn) {
+        const original = btn.textContent;
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = original;
+          btn.classList.remove('copied');
+        }, 2000);
+      }
+    } catch (err) {
+      // Fallback for older browsers
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast('Copied!');
+    }
+  }
+
+  function copyCaption(variant) {
+    const text = document.getElementById(`caption-${variant}`).textContent;
+    const btn = event.target;
+    copyToClipboard(text, btn);
+  }
+
+  function copyHashtags() {
+    const text = document.getElementById('hashtag-display').textContent;
+    const btn = event.target;
+    copyToClipboard(text, btn);
+  }
+
+  function copyFirstComment() {
+    const text = document.getElementById('first-comment').textContent;
+    const btn = event.target;
+    copyToClipboard(text, btn);
+  }
+
+  function copyAllForInstagram() {
+    const caption = document.getElementById(`caption-${activeVariant}`).textContent;
+    const hashtags = document.getElementById('hashtag-display').textContent;
+    const fullText = `${caption}\n\n${hashtags}`;
+    const btn = event.target;
+    copyToClipboard(fullText, btn);
+  }
+
+  // ============================================================
+  // TOAST
+  // ============================================================
+  let toastTimeout;
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  // ============================================================
+  // ERROR DISPLAY
+  // ============================================================
+  function showError(message) {
+    const box = document.getElementById('error-box');
+    document.getElementById('error-message').textContent = message;
+    box.style.display = 'flex';
+  }
+
+  // ============================================================
+  // HELPERS
+  // ============================================================
+  function escapeHtml(text) {
+    if (!text) return '';
+    return String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+</script>
+</body>
+</html>

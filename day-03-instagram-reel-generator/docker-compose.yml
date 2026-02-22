@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  orchestrator:
+    build: ./services/orchestrator
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./output:/output
+    depends_on:
+      - trend-scout
+      - content-strategist
+      - visual-producer
+      - post-optimizer
+    environment:
+      - PORT=3001
+      - TREND_SCOUT_URL=http://trend-scout:3002
+      - CONTENT_STRATEGIST_URL=http://content-strategist:3003
+      - VISUAL_PRODUCER_URL=http://visual-producer:3004
+      - POST_OPTIMIZER_URL=http://post-optimizer:3005
+    restart: unless-stopped
+
+  trend-scout:
+    build: ./services/trend-scout
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - APIFY_API_TOKEN=${APIFY_API_TOKEN:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - TREND_SCOUT_MODEL=${TREND_SCOUT_MODEL:-claude-haiku-4-5-20251001}
+      - USE_MOCK_DATA=${USE_MOCK_DATA:-true}
+    restart: unless-stopped
+
+  content-strategist:
+    build: ./services/content-strategist
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - CONTENT_STRATEGIST_MODEL=${CONTENT_STRATEGIST_MODEL:-claude-sonnet-4-5-20250929}
+      - USE_MOCK_DATA=${USE_MOCK_DATA:-true}
+    restart: unless-stopped
+
+  visual-producer:
+    build: ./services/visual-producer
+    ports:
+      - "3004:3004"
+    volumes:
+      - ./output:/output
+    environment:
+      - PORT=3004
+      - PIAPI_API_KEY=${PIAPI_API_KEY:-}
+      - KLING_VERSION=${KLING_VERSION:-2.6}
+      - KLING_MODE=${KLING_MODE:-pro}
+      - USE_MOCK_DATA=${USE_MOCK_DATA:-true}
+      - ORCHESTRATOR_URL=http://orchestrator:3001
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+    restart: unless-stopped
+
+  post-optimizer:
+    build: ./services/post-optimizer
+    ports:
+      - "3005:3005"
+    environment:
+      - PORT=3005
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - POST_OPTIMIZER_MODEL=${POST_OPTIMIZER_MODEL:-claude-haiku-4-5-20251001}
+      - USE_MOCK_DATA=${USE_MOCK_DATA:-true}
+    restart: unless-stopped
