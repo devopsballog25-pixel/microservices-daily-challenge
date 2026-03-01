@@ -119,7 +119,7 @@ All diagnosed and fixed systematically — no code was written by hand.
 
 - **Live site:** [balajiloganathan.net](https://balajiloganathan.net)
 - **Full case study:** [balajiloganathan.net/projects/portfolio-management-system](https://balajiloganathan.net/projects/portfolio-management-system)
-- **YouTube walkthrough:** https://youtu.be/eGdcCznRu-Y
+- **YouTube walkthrough:** [Watch on YouTube](https://youtu.be/eGdcCznRu-Y)
 - **Series:** [Daily Microservices Challenge](https://github.com/devopsballog25-pixel/microservices-daily-challenge)
 
 > ⚠️ **Note:** This repository contains documentation only. The full source code is maintained in a private repository as this system runs live infrastructure.

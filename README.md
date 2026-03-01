@@ -58,7 +58,7 @@ Watch the full series: [YouTube Playlist](https://youtube.com/@devopsballog25?si
 - **Hosting:** $6.25/month (Railway + domain) vs $16-36/month for SaaS alternatives
 - **Code:** [day-04-portfolio-management-system/](./day-04-portfolio-management-system/)
 - **Live Site:** [balajiloganathan.net](https://balajiloganathan.net)
-- **Video:** (https://youtu.be/eGdcCznRu-Y)
+- **Video:** [Watch on YouTube](https://youtu.be/eGdcCznRu-Y)
 
 **Key Innovation:** The infrastructure itself is the experiment — a self-hosted, fully owned portfolio platform that now hosts all future Daily Challenge case studies. Claude Code autonomously built and deployed 4 services to Railway cloud with Cloudflare CDN, SSL, and a working CMS — zero manual coding.
 
