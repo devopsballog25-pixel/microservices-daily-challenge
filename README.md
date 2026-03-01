@@ -50,15 +50,31 @@ Watch the full series: [YouTube Playlist](https://youtube.com/@devopsballog25?si
 
 **Architecture:** Trend Scout (Apify + Claude Haiku) → Content Strategist (Claude Sonnet) → Visual Producer (Kling AI + FFmpeg + OpenAI TTS) → Post Optimizer (Claude Haiku) → Complete reel with captions and hashtags
 
+### Day 04: Portfolio Management System ✅
+- **Problem:** No central place to showcase experiments — projects lived only on GitHub with no public portfolio, analytics, or audience-building tools
+- **Solution:** 4 microservices — public website, CMS admin panel, analytics service, newsletter service — deployed to production with custom domain
+- **Result:** All success criteria passed · Live at [balajiloganathan.net](https://balajiloganathan.net)
+- **Build Cost:** $10 (Claude Code API)
+- **Hosting:** $6.25/month (Railway + domain) vs $16-36/month for SaaS alternatives
+- **Code:** [day-04-portfolio-management-system/](./day-04-portfolio-management-system/)
+- **Live Site:** [balajiloganathan.net](https://balajiloganathan.net)
+- **Video:** (https://youtu.be/eGdcCznRu-Y)
+
+**Key Innovation:** The infrastructure itself is the experiment — a self-hosted, fully owned portfolio platform that now hosts all future Daily Challenge case studies. Claude Code autonomously built and deployed 4 services to Railway cloud with Cloudflare CDN, SSL, and a working CMS — zero manual coding.
+
+---
+
 ## 🎥 Series Statistics
 
-| Metric | Day 01 | Day 02 | Day 03 |
-|--------|--------|--------|--------|
-| Build Cost | $8.21 | $6.00 | $1.20/reel |
-| Build Time | 42 min | 12 min | 15-20 min |
-| Services | 4 | 6 | 5 |
-| Grade | A- (91%) | A+ (98%) | A+ (99%) |
-| Success Rate | 100% | 100% | 95% |
+| Metric | Day 01 | Day 02 | Day 03 | Day 04 |
+|--------|--------|--------|--------|--------|
+| Build Cost | $8.21 | $6.00 | $1.20/reel | $10.00 |
+| Build Time | 42 min | 12 min | 15-20 min | 1 session |
+| Services | 4 | 6 | 5 | 4 |
+| Grade | A- (91%) | A+ (98%) | A+ (99%) | ✅ Live |
+| Success Rate | 100% | 100% | 95% | 100% |
+
+---
 
 ## 🛠️ Tech Stack
 
@@ -84,46 +100,64 @@ Watch the full series: [YouTube Playlist](https://youtube.com/@devopsballog25?si
 - **Containers:** Docker Compose
 - **Format:** 1080×1920 (9:16), 30 FPS, Instagram-optimized
 
+### Day 04 (Portfolio Management System)
+- **Backend:** Node.js 18 + Express
+- **Templating:** EJS
+- **Database:** PostgreSQL (Railway managed)
+- **Cloud:** Railway (4 services)
+- **CDN / SSL:** Cloudflare
+- **Email:** Resend API
+- **Domain:** balajiloganathan.net
+
+---
+
 ## 📂 Repository Structure
+
 ```
 microservices-daily-challenge/
-├── day-01-restaurant-orders/      # Restaurant order management
-│   ├── services/                   # 4 microservices
-│   ├── tests/                      # Integration tests
+├── day-01-restaurant-orders/           # Restaurant order management
+│   ├── services/                        # 4 microservices
+│   ├── tests/                           # Integration tests
 │   ├── docker-compose.yml
-│   ├── PROBLEM.md                  # Original requirements
-│   ├── README.md                   # Setup & API docs
-│   └── RESULTS.md                  # Implementation analysis
-├── day-02-ai-agent-swarm/         # AI CTO agent swarm
-│   ├── services/                   # 6 microservices
-│   │   ├── web-ui/                # React frontend
-│   │   ├── orchestrator/          # Pipeline coordinator
-│   │   ├── architect-agent/       # Tech stack advisor
-│   │   ├── security-agent/        # Security reviewer
-│   │   ├── cost-agent/            # Cost optimizer
-│   │   └── devops-agent/          # DevOps simplifier
-│   ├── tests/                      # Integration tests
+│   ├── PROBLEM.md
+│   ├── README.md
+│   └── RESULTS.md
+├── day-02-ai-agent-swarm/              # AI CTO agent swarm
+│   ├── services/                        # 6 microservices
+│   │   ├── web-ui/                     # React frontend
+│   │   ├── orchestrator/               # Pipeline coordinator
+│   │   ├── architect-agent/            # Tech stack advisor
+│   │   ├── security-agent/             # Security reviewer
+│   │   ├── cost-agent/                 # Cost optimizer
+│   │   └── devops-agent/               # DevOps simplifier
+│   ├── tests/
 │   ├── docker-compose.yml
-│   ├── PROBLEM.md                  # Original requirements
-│   ├── README.md                   # Setup & API docs
-│   ├── RESULTS.md                  # Implementation analysis
-│   ├── SYNTHESIS-TRUNCATION-FIX.md # Bug fix documentation
-│   └── FINAL-STATUS.md             # Complete system status
-├── day-03-instagram-reel-generator/ # AI reel generation pipeline
-│   ├── services/                   # 5 microservices
-│   │   ├── orchestrator/          # Web UI + pipeline control
-│   │   ├── trend-scout/           # Apify + Claude Haiku
-│   │   ├── content-strategist/    # Claude Sonnet strategy
-│   │   ├── visual-producer/       # Kling AI + FFmpeg + TTS
-│   │   └── post-optimizer/        # Claude Haiku captions
-│   ├── tests/                      # Integration tests
-│   ├── output/                     # Generated reels
+│   ├── PROBLEM.md
+│   ├── README.md
+│   ├── RESULTS.md
+│   ├── SYNTHESIS-TRUNCATION-FIX.md
+│   └── FINAL-STATUS.md
+├── day-03-instagram-reel-generator/    # AI reel generation pipeline
+│   ├── services/                        # 5 microservices
+│   │   ├── orchestrator/               # Web UI + pipeline control
+│   │   ├── trend-scout/                # Apify + Claude Haiku
+│   │   ├── content-strategist/         # Claude Sonnet strategy
+│   │   ├── visual-producer/            # Kling AI + FFmpeg + TTS
+│   │   └── post-optimizer/             # Claude Haiku captions
+│   ├── tests/
+│   ├── output/
 │   ├── docker-compose.yml
-│   ├── PROBLEM.md                  # Original requirements
-│   ├── README.md                   # Setup & API docs
-│   └── RESULTS.md                  # Implementation analysis
-└── README.md                       # This file
+│   ├── PROBLEM.md
+│   ├── README.md
+│   └── RESULTS.md
+├── day-04-portfolio-management-system/ # Live portfolio platform
+│   └── README.md                       # Docs + link to live site
+└── README.md                           # This file
 ```
+
+> **Note:** Day 04 source code is maintained in a private repository as it runs live infrastructure at [balajiloganathan.net](https://balajiloganathan.net).
+
+---
 
 ## 💡 What You'll Learn
 
@@ -139,6 +173,8 @@ microservices-daily-challenge/
 - Video processing with FFmpeg
 - AI-powered content generation pipelines
 - API orchestration across multiple AI services
+- Cloud deployment with Railway + Cloudflare
+- Production debugging (CDN caching, private networking, body limits)
 
 ### AI & LLM Development
 - Claude Code autonomous development
@@ -151,23 +187,31 @@ microservices-daily-challenge/
 - Prompt engineering for video generation
 - Cost optimization in AI pipelines
 
+---
+
 ## 🐛 Real Bugs Fixed
 
 This series shows REAL development, including bugs:
 
 ### Day 02
-1. **Synthesis Truncation** - max_tokens too low (4096 → 8192)
-2. **JSON Parsing Failure** - Markdown code fences in AI response (6-pattern extraction)
-3. **UI Display Bug** - [object Object] rendering (proper object formatting)
-
-All fixed autonomously by Claude Code. Full documentation in `/day-02-ai-agent-swarm/SYNTHESIS-TRUNCATION-FIX.md`
+1. **Synthesis Truncation** — max_tokens too low (4096 → 8192)
+2. **JSON Parsing Failure** — Markdown code fences in AI response (6-pattern extraction)
+3. **UI Display Bug** — [object Object] rendering (proper object formatting)
 
 ### Day 03
-1. **FFmpeg Apostrophe Crash** - Text overlays with apostrophes broke shell parsing (Unicode U+2019 replacement)
-2. **Shell Injection Risk** - Using shell=True exposed vulnerabilities (migrated to spawn())
-3. **Kling AI Timeout** - Unpredictable 5-15 min generation times (15-min polling system with backoff)
-4. **Test Suite API Costs** - Each run burned $1.20 (smart job reuse + mock mode)
-5. **Text Overlay Timing** - hookText appearing at wrong moments (frame-accurate FFmpeg timestamps)
+1. **FFmpeg Apostrophe Crash** — Text overlays with apostrophes broke shell parsing (Unicode U+2019 replacement)
+2. **Shell Injection Risk** — Using shell=True exposed vulnerabilities (migrated to spawn())
+3. **Kling AI Timeout** — Unpredictable 5-15 min generation times (15-min polling system with backoff)
+4. **Test Suite API Costs** — Each run burned $1.20 (smart job reuse + mock mode)
+5. **Text Overlay Timing** — hookText appearing at wrong moments (frame-accurate FFmpeg timestamps)
+
+### Day 04
+1. **Silent fetch failures** — Node's http module couldn't handle Railway's HTTPS + port 8080 (switched to Node 18 native fetch())
+2. **PayloadTooLargeError** — Express 100kb default rejected base64 image uploads (express.json({ limit: '50mb' }))
+3. **CSS not updating** — Cloudflare CDN caching old stylesheet (cache-bust with ?v=2)
+4. **Missing env vars** — Admin panels returning 404/500 (set ADMIN_SECRET, ADMIN_EMAIL in Railway dashboard)
+
+---
 
 ## 📊 Cost Analysis
 
@@ -176,17 +220,24 @@ All fixed autonomously by Claude Code. Full documentation in `/day-02-ai-agent-s
 | Day 01 | $8.21 | N/A | $3k-5k dev project |
 | Day 02 | $6.00 | $0.036/analysis | $5k-15k/month CTO |
 | Day 03 | $8.00 | $1.20/reel | $25-50/reel freelancer |
+| Day 04 | $10.00 | $6.25/month | $500-2k dev + $16-36/mo SaaS |
+
+---
 
 ## 🎓 Learning Resources
 
 Each day includes:
-- ✅ Complete source code
+- ✅ Complete source code (Days 01-03)
 - ✅ Comprehensive documentation
 - ✅ Bug fix learnings
 - ✅ Architecture diagrams
 - ✅ Production test results
 - ✅ Video walkthrough
 - ✅ Real-world performance metrics
+
+Day 04 case study: [balajiloganathan.net/projects/portfolio-management-system](https://balajiloganathan.net/projects/portfolio-management-system)
+
+---
 
 ## 🚀 Quick Start
 
@@ -206,10 +257,7 @@ cd day-02-ai-agent-swarm
 # Set your Anthropic API key
 export ANTHROPIC_API_KEY=your-key-here
 
-# Start all services
 docker-compose up --build
-
-# Open browser
 open http://localhost:3000
 ```
 
@@ -217,30 +265,28 @@ open http://localhost:3000
 ```bash
 cd day-03-instagram-reel-generator
 
-# Copy environment template
 cp .env.example .env
+# Edit .env with: ANTHROPIC_API_KEY, OPENAI_API_KEY, APIFY_API_TOKEN
 
-# Edit .env with your API keys:
-# - ANTHROPIC_API_KEY (required)
-# - OPENAI_API_KEY (required for voiceover)
-# - APIFY_API_TOKEN (required for trend scraping)
-
-# Start all services
 docker-compose up --build
-
-# Open web UI
 open http://localhost:3001
 
-# Or use mock mode (zero API cost testing)
+# Zero-cost mock mode
 USE_MOCK_DATA=true docker-compose up --build
 ```
 
+### Day 04 (Portfolio Platform)
+The live system runs at [balajiloganathan.net](https://balajiloganathan.net). Source code is private as it runs live infrastructure. See [day-04-portfolio-management-system/README.md](./day-04-portfolio-management-system/README.md) for full documentation.
+
+---
+
 ## 🔗 Connect
 
-- **YouTube:** https://youtube.com/@devopsballog25?si=VXq8bhMVWzbFAY95
-- **LinkedIn:** www.linkedin.com/in/balaji-loganathan-devops
-- **GitHub:** https://github.com/devopsballog25-pixel
-- **Instagram:** @dailywisdom.ai (Day 03 live examples)
+- **Portfolio:** [balajiloganathan.net](https://balajiloganathan.net)
+- **YouTube:** [youtube.com/@devopsballog25](https://youtube.com/@devopsballog25?si=VXq8bhMVWzbFAY95)
+- **LinkedIn:** [linkedin.com/in/balaji-loganathan-devops](https://www.linkedin.com/in/balaji-loganathan-devops)
+- **GitHub:** [github.com/devopsballog25-pixel](https://github.com/devopsballog25-pixel)
+- **Instagram:** [@dailywisdom.ai](https://instagram.com/dailywisdom.ai) (Day 03 live examples)
 
 ---
 
