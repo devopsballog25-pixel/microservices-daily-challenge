@@ -62,17 +62,29 @@ Watch the full series: [YouTube Playlist](https://youtube.com/@devopsballog25?si
 
 **Key Innovation:** The infrastructure itself is the experiment — a self-hosted, fully owned portfolio platform that now hosts all future Daily Challenge case studies. Claude Code autonomously built and deployed 4 services to Railway cloud with Cloudflare CDN, SSL, and a working CMS — zero manual coding.
 
+### Day 05: AI Crypto Portfolio Manager 🔴 LIVE
+- **Problem:** Can an AI agent autonomously manage a trading portfolio to a +5% target within 24 hours using only real-time market data and no human intervention?
+- **Solution:** 4 microservices — Market Data (Binance WebSocket), Strategy (Claude Haiku AI), Executor (risk rules + paper trades), Dashboard (live SPA)
+- **Result:** All success criteria passed · Live at [balajiloganathan.net/crypto](https://balajiloganathan.net/crypto)
+- **Build Cost:** ~$10 (Claude Code API)
+- **AI Cost per Decision:** ~$0.001 (Claude Haiku 4.5) · ~$0.10 per 24h experiment
+- **Code:** [day-05-crypto-portfolio-manager/](./day-05-crypto-portfolio-manager/)
+- **Live Dashboard:** [balajiloganathan.net/crypto](https://balajiloganathan.net/crypto)
+- **Video:** *(coming soon)*
+
+**Key Innovation:** A fully transparent autonomous AI trading experiment — every decision, every trade, every reasoning step is logged and visible in real time. The AI evaluates 20+ coins every 15 minutes using live RSI/MACD signals and executes paper trades with a circuit breaker that halts trading if the portfolio drops 8%. Each named 24-hour experiment creates a narrative arc with a single mission: grow $500 to $525.
+
 ---
 
 ## 🎥 Series Statistics
 
-| Metric | Day 01 | Day 02 | Day 03 | Day 04 |
-|--------|--------|--------|--------|--------|
-| Build Cost | $8.21 | $6.00 | $1.20/reel | $10.00 |
-| Build Time | 42 min | 12 min | 15-20 min | 1 session |
-| Services | 4 | 6 | 5 | 4 |
-| Grade | A- (91%) | A+ (98%) | A+ (99%) | ✅ Live |
-| Success Rate | 100% | 100% | 95% | 100% |
+| Metric | Day 01 | Day 02 | Day 03 | Day 04 | Day 05 |
+|--------|--------|--------|--------|--------|--------|
+| Build Cost | $8.21 | $6.00 | $1.20/reel | $10.00 | NA |
+| Build Time | 42 min | 12 min | 15-20 min | 1 session | NA |
+| Services | 4 | 6 | 5 | 4 | 4 |
+| Grade | A- (91%) | A+ (98%) | A+ (99%) | ✅ Live | 🔴 Live |
+| Success Rate | 100% | 100% | 95% | 100% | 100% |
 
 ---
 
@@ -108,6 +120,15 @@ Watch the full series: [YouTube Playlist](https://youtube.com/@devopsballog25?si
 - **CDN / SSL:** Cloudflare
 - **Email:** Resend API
 - **Domain:** balajiloganathan.net
+
+### Day 05 (AI Crypto Portfolio Manager)
+- **Backend:** Node.js 18 + Express
+- **Database:** PostgreSQL (Railway managed)
+- **Market Data:** Binance WebSocket API (live prices, 20+ coins)
+- **AI Model:** Claude Haiku 4.5 (trading decisions, $0.001/call)
+- **Cloud:** Railway (4 services, separate project)
+- **Real-time:** WebSocket (live price feed to browser)
+- **Live at:** balajiloganathan.net/crypto
 
 ---
 
@@ -152,10 +173,12 @@ microservices-daily-challenge/
 │   └── RESULTS.md
 ├── day-04-portfolio-management-system/ # Live portfolio platform
 │   └── README.md                       # Docs + link to live site
+├── day-05-crypto-portfolio-manager/    # AI crypto trading experiment
+│   └── README.md                       # Docs + link to live dashboard
 └── README.md                           # This file
 ```
 
-> **Note:** Day 04 source code is maintained in a private repository as it runs live infrastructure at [balajiloganathan.net](https://balajiloganathan.net).
+> **Note:** Day 04 and Day 05 source code is maintained in private repositories as they run live infrastructure at [balajiloganathan.net](https://balajiloganathan.net).
 
 ---
 
@@ -168,13 +191,15 @@ microservices-daily-challenge/
 - Docker containerization
 - Integration testing strategies
 - Self-healing systems
-- Real-time streaming (Server-Sent Events)
+- Real-time streaming (WebSockets, Server-Sent Events)
 - Multi-agent AI orchestration
 - Video processing with FFmpeg
 - AI-powered content generation pipelines
 - API orchestration across multiple AI services
 - Cloud deployment with Railway + Cloudflare
 - Production debugging (CDN caching, private networking, body limits)
+- Live market data integration (Binance WebSocket)
+- Autonomous AI trading systems with circuit breakers
 
 ### AI & LLM Development
 - Claude Code autonomous development
@@ -186,6 +211,7 @@ microservices-daily-challenge/
 - Multi-model AI orchestration (Claude, Kling, OpenAI)
 - Prompt engineering for video generation
 - Cost optimization in AI pipelines
+- Real-time AI decision-making at $0.001/call
 
 ---
 
@@ -206,10 +232,17 @@ This series shows REAL development, including bugs:
 5. **Text Overlay Timing** — hookText appearing at wrong moments (frame-accurate FFmpeg timestamps)
 
 ### Day 04
-1. **Silent fetch failures** — Node's http module couldn't handle Railway's HTTPS + port 8080 (switched to Node 18 native fetch())
-2. **PayloadTooLargeError** — Express 100kb default rejected base64 image uploads (express.json({ limit: '50mb' }))
+1. **Silent fetch failures** — Node's `http` module couldn't handle Railway's HTTPS + port 8080 (switched to Node 18 native fetch())
+2. **PayloadTooLargeError** — Express default 100kb body limit rejected base64 image uploads (express.json({ limit: '50mb' }))
 3. **CSS not updating** — Cloudflare CDN caching old stylesheet (cache-bust with ?v=2)
 4. **Missing env vars** — Admin panels returning 404/500 (set ADMIN_SECRET, ADMIN_EMAIL in Railway dashboard)
+
+### Day 05
+1. **Database isolation** — Production synced from staging shared the same PostgreSQL instance; all 4 services needed DATABASE_URL updated to point to a separate production Postgres
+2. **Sparkline Y-axis inverted** — SVG coordinate space has Y=0 at the top; missing `height -` inversion made an upward portfolio appear as a downward curve
+3. **Chart X-axis clipping** — Fixed time domain set on first render caused new data points to overflow the chart boundaries as snapshots accumulated
+4. **Time bar not updating** — Progress bar calculated once on page load instead of inside the polling loop; moved calculation to run every 30s
+5. **HOLD bias in AI strategy** — AI prompt framed cash as "reserves" and full position slots as "deployed"; tuned prompt with action bias, lower buy threshold (70% → 55%), and consecutive HOLD limit
 
 ---
 
@@ -221,6 +254,7 @@ This series shows REAL development, including bugs:
 | Day 02 | $6.00 | $0.036/analysis | $5k-15k/month CTO |
 | Day 03 | $8.00 | $1.20/reel | $25-50/reel freelancer |
 | Day 04 | $10.00 | $6.25/month | $500-2k dev + $16-36/mo SaaS |
+| Day 05 | NA | ~$0.10/experiment | $50k-200k quant trading system |
 
 ---
 
@@ -235,7 +269,8 @@ Each day includes:
 - ✅ Video walkthrough
 - ✅ Real-world performance metrics
 
-Day 04 case study: [balajiloganathan.net/projects/portfolio-management-system](https://balajiloganathan.net/projects/portfolio-management-system)
+Day 04 case study: [balajiloganathan.net/projects/portfolio-management-system](https://balajiloganathan.net/projects/portfolio-management-system)  
+Day 05 case study: [balajiloganathan.net/projects/ai-crypto-portfolio-manager](https://balajiloganathan.net/projects/ai-crypto-portfolio-manager)
 
 ---
 
@@ -277,6 +312,9 @@ USE_MOCK_DATA=true docker-compose up --build
 
 ### Day 04 (Portfolio Platform)
 The live system runs at [balajiloganathan.net](https://balajiloganathan.net). Source code is private as it runs live infrastructure. See [day-04-portfolio-management-system/README.md](./day-04-portfolio-management-system/README.md) for full documentation.
+
+### Day 05 (AI Crypto Portfolio Manager)
+The live system runs at [balajiloganathan.net/crypto](https://balajiloganathan.net/crypto). Source code is private as it runs live infrastructure. See [day-05-crypto-portfolio-manager/README.md](./day-05-crypto-portfolio-manager/README.md) for full documentation.
 
 ---
 
