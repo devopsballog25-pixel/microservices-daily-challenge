@@ -150,7 +150,7 @@ Compare to commercial algorithmic trading platforms ($50-500/month) or building 
 
 - **Live dashboard:** [balajiloganathan.net/crypto](https://balajiloganathan.net/crypto)
 - **Full case study:** [balajiloganathan.net/projects/ai-crypto-portfolio-manager](https://balajiloganathan.net/projects/ai-crypto-portfolio-manager)
-- **YouTube walkthrough:** *(coming soon)*
+- **YouTube walkthrough:** [Watch on YouTube](https://youtu.be/20ZqRYti52g)
 - **Series:** [Daily Microservices Challenge](https://github.com/devopsballog25-pixel/microservices-daily-challenge)
 
 > ⚠️ **Note:** This repository contains documentation only. The full source code is maintained in a private repository as this system runs live infrastructure. This is a paper trading simulation — no real money is involved. Educational experiment only.

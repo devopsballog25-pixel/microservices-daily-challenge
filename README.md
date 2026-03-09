@@ -70,7 +70,7 @@ Watch the full series: [YouTube Playlist](https://youtube.com/@devopsballog25?si
 - **AI Cost per Decision:** ~$0.001 (Claude Haiku 4.5) · ~$0.10 per 24h experiment
 - **Code:** [day-05-crypto-portfolio-manager/](./day-05-crypto-portfolio-manager/)
 - **Live Dashboard:** [balajiloganathan.net/crypto](https://balajiloganathan.net/crypto)
-- **Video:** *(coming soon)*
+- **Video:** [Watch on YouTube](https://youtu.be/20ZqRYti52g)
 
 **Key Innovation:** A fully transparent autonomous AI trading experiment — every decision, every trade, every reasoning step is logged and visible in real time. The AI evaluates 20+ coins every 15 minutes using live RSI/MACD signals and executes paper trades with a circuit breaker that halts trading if the portfolio drops 8%. Each named 24-hour experiment creates a narrative arc with a single mission: grow $500 to $525.
 
