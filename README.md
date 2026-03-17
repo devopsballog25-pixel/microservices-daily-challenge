@@ -74,17 +74,31 @@ Watch the full series: [YouTube Playlist](https://youtube.com/@devopsballog25?si
 
 **Key Innovation:** A fully transparent autonomous AI trading experiment — every decision, every trade, every reasoning step is logged and visible in real time. The AI evaluates 20+ coins every 15 minutes using live RSI/MACD signals and executes paper trades with a circuit breaker that halts trading if the portfolio drops 8%. Each named 24-hour experiment creates a narrative arc with a single mission: grow $500 to $525.
 
+### Day 06: AI Crypto Live Stream — 24/7 YouTube Streaming 🔴 LIVE
+- **Problem:** The autonomous AI trading experiment from Day 05 was running 24/7 but nobody could watch it in real time without visiting the dashboard URL directly
+- **Solution:** A production livestream microservice that captures the /live dashboard using headless Chromium + Xvfb virtual display, encodes it with FFmpeg, and streams 24/7 to YouTube via RTMP
+- **Result:** All success criteria passed · Live at [youtube.com/live/KtYI7Q8Sx_E](https://youtube.com/live/KtYI7Q8Sx_E?feature=share)
+- **Build Cost:** ~$10 (Claude Code API)
+- **Running Cost:** ~$10-15/month (Railway Pro — required for real-time H264 encoding)
+- **Code:** [day-06-crypto-live-stream/](./day-06-crypto-live-stream/)
+- **Live Stream:** [youtube.com/live/KtYI7Q8Sx_E](https://youtube.com/live/KtYI7Q8Sx_E?feature=share)
+- **Live Dashboard:** [balajiloganathan.net/crypto/live](https://balajiloganathan.net/crypto/live)
+
+**Key Innovation:** The first AI agent in this series that streams its own operation publicly. Headless Chromium renders the live trading dashboard into a virtual display, FFmpeg captures and encodes it at 1080p30, and streams it continuously to YouTube — all running autonomously on Railway with auto-restart on any crash.
+
 ---
 
 ## 🎥 Series Statistics
 
-| Metric | Day 01 | Day 02 | Day 03 | Day 04 | Day 05 |
-|--------|--------|--------|--------|--------|--------|
-| Build Cost | $8.21 | $6.00 | $1.20/reel | $10.00 | NA |
-| Build Time | 42 min | 12 min | 15-20 min | 1 session | NA |
-| Services | 4 | 6 | 5 | 4 | 4 |
-| Grade | A- (91%) | A+ (98%) | A+ (99%) | ✅ Live | 🔴 Live |
-| Success Rate | 100% | 100% | 95% | 100% | 100% |
+## 🎥 Series Statistics
+
+| Metric | Day 01 | Day 02 | Day 03 | Day 04 | Day 05 | Day 06 |
+|--------|--------|--------|--------|--------|--------|--------|
+| Build Cost | $8.21 | $6.00 | $1.20/reel | $10.00 | NA | NA |
+| Build Time | 42 min | 12 min | 15-20 min | 1 session | NA | NA |
+| Services | 4 | 6 | 5 | 4 | 4 | 1 |
+| Grade | A- (91%) | A+ (98%) | A+ (99%) | ✅ Live | 🔴 Live | 🔴 Live |
+| Success Rate | 100% | 100% | 95% | 100% | 100% | 100% |
 
 ---
 
@@ -130,6 +144,17 @@ Watch the full series: [YouTube Playlist](https://youtube.com/@devopsballog25?si
 - **Real-time:** WebSocket (live price feed to browser)
 - **Live at:** balajiloganathan.net/crypto
 
+### Day 06 (AI Crypto Live Stream)
+- **Runtime:** Node.js 18
+- **Virtual Display:** Xvfb (X Virtual Framebuffer) 1920x1080
+- **Browser:** Chromium headless (kiosk mode)
+- **Video Encoding:** FFmpeg x11grab → H264 libx264 ultrafast
+- **Audio:** AAC 128kbps stereo + YouTube Audio Library CC music
+- **Streaming:** RTMP to YouTube Live (rtmp://x.rtmp.youtube.com/live2)
+- **Cloud:** Railway Pro (dedicated CPU for real-time encoding)
+- **Resolution:** 1920x1080 @ 30fps
+- **Bitrate:** 6800kbps target (CBR with filler)
+- **Live at:** youtube.com/live/KtYI7Q8Sx_E
 ---
 
 ## 📂 Repository Structure
@@ -175,6 +200,8 @@ microservices-daily-challenge/
 │   └── README.md                       # Docs + link to live site
 ├── day-05-crypto-portfolio-manager/    # AI crypto trading experiment
 │   └── README.md                       # Docs + link to live dashboard
+├── day-06-crypto-live-stream/          # 24/7 YouTube livestream service
+│   └── README.md                       # Docs + link to live stream
 └── README.md                           # This file
 ```
 
@@ -244,6 +271,14 @@ This series shows REAL development, including bugs:
 4. **Time bar not updating** — Progress bar calculated once on page load instead of inside the polling loop; moved calculation to run every 30s
 5. **HOLD bias in AI strategy** — AI prompt framed cash as "reserves" and full position slots as "deployed"; tuned prompt with action bias, lower buy threshold (70% → 55%), and consecutive HOLD limit
 
+### Day 06
+1. **draw_mouse flag not supported** — `-draw_mouse 0` flag doesn't exist in FFmpeg 5.1.8 x11grab; removed entirely
+2. **Corrupted music file** — wget downloaded incomplete MP3 from external URL; switched to FFmpeg-generated audio then YouTube Audio Library CC track committed directly to repo
+3. **Encoding too slow** — `veryfast` preset couldn't maintain 30fps at 1080p on Railway; switched to `ultrafast` + `stillimage` tune specifically optimized for static dashboard content
+4. **Bitrate below YouTube recommendation** — Static dark dashboard compresses heavily; added `nal-hrd=cbr:force-cfr=1:filler=1` to pad stream to target bitrate
+5. **Thread queue blocking** — Added `-thread_queue_size 512` to both video and audio inputs to prevent FFmpeg blocking on capture
+6. **Activity feed reversed** — `.reverse()` was applied after API returned newest-first, causing oldest events to show at top; removed `.reverse()`
+
 ---
 
 ## 📊 Cost Analysis
@@ -255,6 +290,7 @@ This series shows REAL development, including bugs:
 | Day 03 | $8.00 | $1.20/reel | $25-50/reel freelancer |
 | Day 04 | $10.00 | $6.25/month | $500-2k dev + $16-36/mo SaaS |
 | Day 05 | NA | ~$0.10/experiment | $50k-200k quant trading system |
+| Day 06 | ~$10 | $10-15/month | $500-2k streaming setup + $50-200/month cloud |
 
 ---
 
@@ -271,6 +307,7 @@ Each day includes:
 
 Day 04 case study: [balajiloganathan.net/projects/portfolio-management-system](https://balajiloganathan.net/projects/portfolio-management-system)  
 Day 05 case study: [balajiloganathan.net/projects/ai-crypto-portfolio-manager](https://balajiloganathan.net/projects/ai-crypto-portfolio-manager)
+Day 06 case study: [balajiloganathan.net/projects/ai-crypto-live-stream](https://balajiloganathan.net/projects/ai-crypto-live-stream)
 
 ---
 
