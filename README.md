@@ -67,30 +67,27 @@ Watch the full series: [YouTube Playlist](https://youtube.com/@devopsballog25?si
 - **Problem:** Can an AI agent autonomously manage a trading portfolio to a +5% target within 24 hours using only real-time market data and no human intervention?
 - **Solution:** 4 microservices — Market Data (Binance WebSocket), Strategy (Groq LLaMA), Executor (risk rules + paper trades), Dashboard (live SPA)
 - **Result:** All success criteria passed · Live at [balajiloganathan.net/crypto](https://balajiloganathan.net/crypto)
-- **Build Cost:** ~$10 (Claude Code API)
+- **Build Cost:** NA
 - **AI Cost per Decision:** ~$0.004 (Groq llama-3.3-70b) · ~$0.10 per 24h experiment
 - **Live Dashboard:** [balajiloganathan.net/crypto](https://balajiloganathan.net/crypto)
-- **Live Stream:** [youtube.com/live/UPBSaYLGsFs](https://youtube.com/live/UPBSaYLGsFs)
 - **Video:** [Watch on YouTube](https://youtu.be/20ZqRYti52g)
 
 **Key Innovation:** A fully transparent autonomous AI trading experiment — every decision, every trade, every reasoning step is logged and visible in real time. The AI evaluates 20+ coins every 15 minutes using live RSI/MACD signals and executes paper trades with a circuit breaker that halts trading if the portfolio drops 8%.
 
-### Day 06: AI Crypto Live Stream — 24/7 YouTube Streaming 🔴 LIVE
+### Day 06: AI Crypto Live Stream — 24/7 YouTube Streaming ✅ (Decommissioned)
 - **Problem:** The autonomous AI trading experiment from Day 05 was running 24/7 but nobody could watch it in real time without visiting the dashboard URL directly
 - **Solution:** A production livestream microservice that captures the /live dashboard using headless Chromium + Xvfb virtual display, encodes it with FFmpeg, and streams 24/7 to YouTube via RTMP
-- **Result:** All success criteria passed · Live at [youtube.com/live/UPBSaYLGsFs](https://youtube.com/live/UPBSaYLGsFs)
-- **Build Cost:** ~$10 (Claude Code API)
+- **Result:** All success criteria passed · Decommissioned March 2026
+- **Build Cost:** NA
 - **Running Cost:** ~$10-15/month (Railway Pro — required for real-time H264 encoding)
-- **Live Stream:** [youtube.com/live/UPBSaYLGsFs](https://youtube.com/live/UPBSaYLGsFs)
-- **Live Dashboard:** [balajiloganathan.net/crypto](https://balajiloganathan.net/crypto)
 
-**Key Innovation:** The first AI agent in this series that streams its own operation publicly. Headless Chromium renders the live trading dashboard into a virtual display, FFmpeg captures and encodes it at 1080p30, and streams it continuously to YouTube — all running autonomously on Railway with auto-restart on any crash.
+**Key Innovation:** The first AI agent in this series that streamed its own operation publicly. Headless Chromium rendered the live trading dashboard into a virtual display, FFmpeg captured and encoded it at 1080p30, and streamed it continuously to YouTube — all running autonomously on Railway with auto-restart on any crash.
 
 ### Day 07: Autonomous LinkedIn Content Agent (NOVA) 🔴 LIVE
 - **Problem:** Building in public requires consistent LinkedIn content — but writing, scheduling and posting 3x per week competes directly with actual building time
 - **Solution:** 4 microservices — Generator (Groq LLaMA + live data sources), Scheduler (Mon/Wed/Fri calendar), Admin (review + approval panel), Publisher (LinkedIn API) — deployed on Railway with zero human involvement
 - **Result:** All success criteria passed · Live and posting 3x/week
-- **Build Cost:** ~$10 (Claude Code API)
+- **Build Cost:** NA
 - **AI Cost per Post:** ~$0.004 (Groq llama-3.3-70b)
 - **Case Study:** [balajiloganathan.net/projects/autonomous-linkedin-content-agent](https://balajiloganathan.net/projects/autonomous-linkedin-content-agent)
 - **Video:** [Watch on YouTube](https://youtu.be/hG6A47I6ALE)
@@ -102,17 +99,27 @@ Watch the full series: [YouTube Playlist](https://youtube.com/@devopsballog25?si
 - **Tier 2 (Wednesday 9AM EST):** Portfolio project spotlight — sourced from portfolio CMS with YouTube build link, rotating through all projects
 - **Tier 3 (Friday 9AM EST):** Builder story — first-person, paired with that week's Tier 2 project, sourced from key findings in the CMS
 
+### Day 08: DropResearch — AI-Powered Shopify Niche Research Tool ✅
+- **Problem:** Beginners fail at the first step of dropshipping — choosing a niche. No accessible tool combines real competition data, supplier availability, and AI reasoning into a single guided flow
+- **Solution:** 5 microservices — niche discovery with live Shopify store validation, 5-market parallel validation, 5-source research analysis, Groq-powered sourcing brief, downloadable Word report
+- **Result:** All success criteria passed · Full pipeline confirmed working locally
+- **Build Cost:** NA
+- **Case Study:** [balajiloganathan.net/projects/dropresearch](https://balajiloganathan.net/projects/dropresearch)
+- **Video:** [Watch on YouTube](https://youtu.be/OAJLr3HbKgU)
+
+**Key Innovation:** A 4-step guided research pipeline that takes a complete beginner from zero to a store-ready sourcing brief backed by real data — live Shopify store counts, CJ Dropshipping API availability, Google Trends, Amazon signals, and AliExpress pricing — all synthesised by Groq into actionable product categories with viral content angles, pricing strategy, and a downloadable Word document report.
+
 ---
 
 ## 🎥 Series Statistics
 
-| Metric | Day 01 | Day 02 | Day 03 | Day 04 | Day 05 | Day 06 | Day 07 |
-|--------|--------|--------|--------|--------|--------|--------|--------|
-| Build Cost | $8.21 | $6.00 | $1.20/reel | NA | NA | NA | NA |
-| Build Time | 42 min | 12 min | 15-20 min | NA | NA | NA | NA |
-| Services | 4 | 6 | 5 | 4 | 4 | 1 | 4 |
-| Grade | A- (91%) | A+ (98%) | A+ (99%) | ✅ Live | 🔴 Live | 🔴 Live | 🔴 Live |
-| Success Rate | 100% | 100% | 95% | 100% | 100% | 100% | 100% |
+| Metric | Day 01 | Day 02 | Day 03 | Day 04 | Day 05 | Day 06 | Day 07 | Day 08 |
+|--------|--------|--------|--------|--------|--------|--------|--------|--------|
+| Build Cost | $8.21 | $6.00 | $1.20/reel | NA | NA | NA | NA | NA |
+| Build Time | 42 min | 12 min | 15-20 min | NA | NA | NA | NA | NA |
+| Services | 4 | 6 | 5 | 4 | 4 | 1 | 4 | 5 |
+| Grade | A- (91%) | A+ (98%) | A+ (99%) | ✅ Live | 🔴 Live | ✅ Done | 🔴 Live | ✅ Local |
+| Success Rate | 100% | 100% | 95% | 100% | 100% | 100% | 100% | 100% |
 
 ---
 
@@ -151,36 +158,37 @@ Watch the full series: [YouTube Playlist](https://youtube.com/@devopsballog25?si
 
 ### Day 05 (AI Crypto Portfolio Manager)
 - **Backend:** Node.js 18 + Express
+- **AI Model:** Groq llama-3.3-70b-versatile
+- **Market Data:** Binance WebSocket (20+ coins real-time)
 - **Database:** PostgreSQL (Railway managed)
-- **Market Data:** Binance WebSocket API (live prices, 20+ coins)
-- **AI Model:** Groq llama-3.3-70b-versatile (trading decisions, ~$0.004/call)
-- **Cloud:** Railway (4 services, separate project)
-- **Real-time:** WebSocket (live price feed to browser)
-- **Live at:** balajiloganathan.net/crypto
+- **Frontend:** Single-page app with live charts
+- **Cloud:** Railway (4 services)
 
 ### Day 06 (AI Crypto Live Stream)
-- **Runtime:** Node.js 18
-- **Virtual Display:** Xvfb (X Virtual Framebuffer) 1920x1080
-- **Browser:** Chromium headless (kiosk mode)
-- **Video Encoding:** FFmpeg x11grab → H264 libx264 ultrafast
-- **Audio:** AAC 128kbps stereo
-- **Streaming:** RTMP to YouTube Live
-- **Cloud:** Railway Pro (dedicated CPU for real-time encoding)
-- **Resolution:** 1920x1080 @ 30fps
+- **Capture:** Headless Chromium + Xvfb virtual display
+- **Encoding:** FFmpeg (H264, 1080p30)
+- **Streaming:** RTMP → YouTube Live
+- **Cloud:** Railway Pro
 
 ### Day 07 (Autonomous LinkedIn Agent — NOVA)
-- **Backend:** Node.js 18 + Express (4 services)
+- **Backend:** Node.js 18 + Express
+- **AI Model:** Groq llama-3.3-70b-versatile
+- **Auth:** LinkedIn OAuth 2.0
 - **Database:** PostgreSQL (Railway managed)
-- **AI Model:** Groq llama-3.3-70b-versatile (content generation, ~$0.004/post)
-- **Content Sources:** Crypto dashboard API + Portfolio CMS API
-- **Publishing:** LinkedIn UGC API (OAuth 2.0)
-- **Cloud:** Railway (4 services, separate project)
-- **Admin:** Web dashboard with approve/reject/edit/cancel/post-now
-- **Schedule:** Mon 8AM / Wed 9AM / Fri 9AM EST (automated)
+- **Cloud:** Railway (4 services)
+
+### Day 08 (DropResearch)
+- **Backend:** Node.js 18 + Express, Python FastAPI
+- **AI Model:** Groq llama-3.3-70b-versatile
+- **Scraping:** Scrapling StealthyFetcher (headless Firefox)
+- **APIs:** CJ Dropshipping API v2, pytrends
+- **Auth:** Supabase + Google OAuth
+- **Export:** npm docx (.docx generation)
+- **Containers:** Docker Compose (local)
 
 ---
 
-## 📂 Repository Structure
+## 📁 Repository Structure
 
 ```
 microservices-daily-challenge/
@@ -191,6 +199,7 @@ microservices-daily-challenge/
 ├── day-05-crypto-portfolio-manager/
 ├── day-06-crypto-live-stream/
 ├── day-07-linkedin-agent/
+├── day-08-dropship-research/
 │   └── README.md
 └── README.md
 ```
@@ -208,6 +217,13 @@ microservices-daily-challenge/
 6. **Unicode table broken on LinkedIn** — Box-drawing characters (`┌─┬─┐`) rendered as broken lines on mobile; replaced with emoji-labeled plain text lines
 7. **Tier 3 paired with wrong project** — Tier 3 was using independent rotation instead of pairing with that week's Tier 2 project; fixed by querying `scheduled_posts` for current week's Tier 2 `project_id`
 
+### Day 08
+1. **Generic niche output** — Groq returned the same overused niches (candles, soap, macrame) regardless of prompt variation; fixed with rotating category system (10 themes) and an explicit banned niches list
+2. **Step 3 product discovery producing commodity results** — CJ API + Scrapling loop surfaced wire cutters and generic household items in speciality niche searches; redesigned Step 3 entirely as a Groq-only sourcing brief — dramatically better output
+3. **CJ API silent rate limiting** — Parallel CJ calls appeared to succeed but returned empty arrays; fixed with sequential processing and 1100ms delays between calls
+4. **State lost across OAuth redirect** — Users lost their niche selection after Google login because in-memory state was cleared on redirect; fixed with localStorage save-before/restore-after pattern in onAuthStateChange handler
+5. **Scrapling blocked on Railway** — StealthyFetcher works locally but Google immediately blocks Railway datacenter IPs; decision made to keep tool local rather than deploy a degraded experience
+
 ---
 
 ## 📊 Cost Analysis
@@ -221,6 +237,7 @@ microservices-daily-challenge/
 | Day 05 | NA | ~$0.10/experiment | $50k-200k quant trading system |
 | Day 06 | NA | $10-15/month | $500-2k streaming setup + $50-200/month cloud |
 | Day 07 | NA | ~$0.05/month (AI) | $500-2k/month social media manager |
+| Day 08 | NA | Local only | $200-500 niche research tool subscription/year |
 
 ---
 
@@ -244,6 +261,9 @@ microservices-daily-challenge/
 - Autonomous AI trading systems with circuit breakers
 - LinkedIn API OAuth 2.0 + UGC post publishing
 - Autonomous content agents with personality
+- Multi-step AI research pipelines with live data validation
+- Stealth web scraping with headless browser fingerprint spoofing
+- Word document generation from Node.js
 
 ### AI & LLM Development
 - Claude Code autonomous development
@@ -258,6 +278,8 @@ microservices-daily-challenge/
 - Real-time AI decision-making at $0.001/call
 - Force-injecting critical content when LLMs ignore instructions
 - Grounding LLM output in real data to prevent hallucination
+- Rotating category systems for diverse AI generation
+- Designing output strategy when automation produces commodity results
 
 ---
 
@@ -276,6 +298,7 @@ Day 04 case study: [balajiloganathan.net/projects/portfolio-management-system](h
 Day 05 case study: [balajiloganathan.net/projects/ai-crypto-portfolio-manager](https://balajiloganathan.net/projects/ai-crypto-portfolio-manager)
 Day 06 case study: [balajiloganathan.net/projects/ai-crypto-live-stream](https://balajiloganathan.net/projects/ai-crypto-live-stream)
 Day 07 case study: [balajiloganathan.net/projects/autonomous-linkedin-content-agent](https://balajiloganathan.net/projects/autonomous-linkedin-content-agent)
+Day 08 case study: [balajiloganathan.net/projects/dropresearch](https://balajiloganathan.net/projects/dropresearch)
 
 ---
 
@@ -315,10 +338,21 @@ The live system runs at [balajiloganathan.net](https://balajiloganathan.net). So
 The live system runs at [balajiloganathan.net/crypto](https://balajiloganathan.net/crypto). Source code is private as it runs live infrastructure. See [day-05-crypto-portfolio-manager/README.md](./day-05-crypto-portfolio-manager/README.md) for full documentation.
 
 ### Day 06 (AI Crypto Live Stream)
-The live stream runs at [youtube.com/live/UPBSaYLGsFs](https://youtube.com/live/UPBSaYLGsFs). Source code is private as it runs live infrastructure. See [day-06-crypto-live-stream/README.md](./day-06-crypto-live-stream/README.md) for full documentation.
+Decommissioned March 2026. Source code is private. See [day-06-crypto-live-stream/README.md](./day-06-crypto-live-stream/README.md) for full documentation.
 
 ### Day 07 (Autonomous LinkedIn Agent — NOVA)
-The live agent posts at [linkedin.com/in/balaji-loganathan-devops](https://linkedin.com/in/balaji-loganathan-devops). Source code is private as it runs live infrastructure. See [day-07-linkedin-agent/README.md](./day-07-linkedin-agent/README.md) for full documentation.
+The live agent posts at [linkedin.com/in/balaji-loganathan-devops](https://linkedin.com/in/balaji-loganathan-devops). Source code is private as it runs live infrastructure. See [day-07-LinkedIn-Agent/README.md](./day-07-LinkedIn-Agent/README.md) for full documentation.
+
+### Day 08 (DropResearch)
+```bash
+cd day-08-dropship-research
+cp .env.example .env
+# Edit .env with: GROQ_API_KEY, SUPABASE_URL, SUPABASE_ANON_KEY,
+#                 SUPABASE_SERVICE_KEY, CJ_API_KEY, CJ_ACCESS_TOKEN, CJ_OPEN_ID
+docker-compose up --build
+open http://localhost:3004
+```
+See [day-08-dropship-research/README.md](./day-08-dropship-research/README.md) for full documentation.
 
 ---
 
@@ -330,7 +364,6 @@ The live agent posts at [linkedin.com/in/balaji-loganathan-devops](https://linke
 - **GitHub:** [github.com/devopsballog25-pixel](https://github.com/devopsballog25-pixel)
 - **Instagram:** [@dailywisdom.ai](https://instagram.com/dailywisdom.ai) (Day 03 live examples)
 - **Live Crypto Dashboard:** [balajiloganathan.net/crypto](https://balajiloganathan.net/crypto)
-- **Live YouTube Stream:** [youtube.com/live/UPBSaYLGsFs](https://youtube.com/live/UPBSaYLGsFs)
 
 ---
 
